@@ -21,23 +21,18 @@ typedef struct{
     
 } Particle;
 
-
-
 msa::OpenCL			opencl;
-
 msa::OpenCLBufferManagedT<Particle>	particles;
 msa::OpenCLBufferManagedT<float4> particlePos;
 msa::OpenCLBufferManagedT<float4> particleCol;
-
-msa::OpenCLBufferManagedT<float2> particleForces;
 msa::OpenCLBufferManagedT<float2> obstacles;
 
 GLuint				vbo[2];
 
-int N = 100000; //Number of particles
 
 ParticlesCL::ParticlesCL() {
     
+    nParticles              = 100000;
     textureWidth            = 1900 * 3;
     textureHeight           = 1200 * 2;
     vfWidth                 = 1900;
@@ -99,7 +94,6 @@ void ParticlesCL::setup(int gpuDeviceID ) {
     onPolyChangedHandler(e);
     
     fitToScreen();
-
     
 }
 
@@ -121,33 +115,25 @@ void ParticlesCL::setFBO() {
 
 void ParticlesCL::setVBO () {
     
-    
     glGenBuffersARB(2, vbo);
-    
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vbo[0]);
-    glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float4) * N, particlePos, GL_DYNAMIC_COPY_ARB);
+    glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float4) * nParticles, particlePos, GL_DYNAMIC_COPY_ARB);
     glVertexPointer(2, GL_FLOAT, 0, 0);
-    
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vbo[1]);
-    glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float4) * N, particleCol, GL_DYNAMIC_COPY_ARB);
+    glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float4) * nParticles, particleCol, GL_DYNAMIC_COPY_ARB);
     glColorPointer(4, GL_FLOAT, 0, 0);
-    
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
-    
-    
     
 }
 
 void ParticlesCL::setParticles () {
     
-
+    particles.initBuffer( nParticles );
+    particlePos.initFromGLObject( vbo[0], nParticles );
+    particleCol.initFromGLObject( vbo[1], nParticles );
+    obstacles.initBuffer(8192);
     
-    particles.initBuffer( N );
-    particlePos.initFromGLObject( vbo[0], N );
-    particleCol.initFromGLObject( vbo[1], N );
-    obstacles.initBuffer(2048);
-    
-    for(int i=0; i<N; i++) {
+    for(int i=0; i<nParticles; i++) {
         Particle &p = particles[i];
         
         ofVec2f pos = this->getRandomPos();
@@ -178,12 +164,12 @@ void ParticlesCL::setParticles () {
 
 void ParticlesCL::setParticleVFIndex() {
     
-    int step        = floor((float)N / (float)numOfVFs );
+    int step        = floor((float)nParticles / (float)numOfVFs );
     int stepCount   = 0;
     int vfIndex     = 0;
     float color     = 1.0;
     
-    for(int i=0; i<N; i++) {
+    for(int i=0; i<nParticles; i++) {
         Particle &p = particles[i];
         if(stepCount > step ) {
             stepCount = 0;
@@ -245,7 +231,6 @@ void ParticlesCL::setVectorFields() {
 
 void ParticlesCL::update() {
     
-    
     if(bNeedReset ) {
         
         setFBO();
@@ -268,9 +253,9 @@ void ParticlesCL::update() {
     particles.readFromDevice();
     
     ofVec2f direction;
-    for(int i=0; i<N; i++) {
-        Particle &p = particles[i];
+    for(int i=0; i<nParticles; i++) {
         
+        Particle &p = particles[i];
         
         if(p.life >= p.death || !vectorFieldsRect.inside(p.x, p.y)) {
             
@@ -281,11 +266,9 @@ void ParticlesCL::update() {
             p.life = 0;
             p.death =  minLife + ofRandom(maxLife);
             
-            
         } else {
             
             int vfIndex =  (int)p.dummy.w;
-            
             
             if(vectorFields[vfIndex]->bIsAllocated ) {
                 direction = vectorFields[vfIndex]->getVectorInterpolated(p.x, p.y, origRect.width, origRect.height);
@@ -300,7 +283,7 @@ void ParticlesCL::update() {
     particles.writeToDevice();
     particlePos.writeToDevice();
 
-    opencl.kernel("update")->run1D( N );
+    opencl.kernel("update")->run1D( nParticles );
     
     vectorFieldsRect.x = origRect.width * .5 - vectorFieldsRect.width * .5;
     vectorFieldsRect.y = origRect.height * .5 - vectorFieldsRect.height +  vectorFieldsRect.height * .5;
@@ -381,7 +364,7 @@ void ParticlesCL::prepass(){
     glVertexPointer(2, GL_FLOAT, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vbo[1]);
     glColorPointer(4, GL_FLOAT, 0, 0);
-    glDrawArrays(GL_POINTS, 0, N);
+    glDrawArrays(GL_POINTS, 0, nParticles);
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
     
@@ -497,7 +480,7 @@ ofFbo* ParticlesCL::getFbo() {
 
 void ParticlesCL::setNumOfParticles(int num) {
     
-    N = num;
+    nParticles = num;
     bNeedVBOReset = true;
 
 }
@@ -557,7 +540,6 @@ void ParticlesCL::setVFScale(float scale) {
     this->vfScale = scale * 0.2;
     bNeedReset = true;
 
-    
 }
 
 void ParticlesCL::toggleBoundsVisibility() {
@@ -565,8 +547,6 @@ void ParticlesCL::toggleBoundsVisibility() {
     this->bDrawBounds = !this->bDrawBounds;
     
 }
-
-
 
 void ParticlesCL::onMousePressedEvent(ofMouseEventArgs & e) {
     
@@ -580,7 +560,6 @@ void ParticlesCL::onMousePressedEvent(ofMouseEventArgs & e) {
     polylineManager->mousePressed(coords.x, coords.y);
     vectorGradManager->mousePressed(coords.x, coords.y);
 
-    
 }
 
 void ParticlesCL::onMouseDragEvent(ofMouseEventArgs & e) {
@@ -594,6 +573,7 @@ void ParticlesCL::onMouseDragEvent(ofMouseEventArgs & e) {
 
     polylineManager->mouseDragged(coords.x, coords.y);
     vectorGradManager->mouseDragged(coords.x, coords.y);
+    
 }
 
 void ParticlesCL::onMouseReleavedEvent(ofMouseEventArgs & e) {
@@ -603,21 +583,13 @@ void ParticlesCL::onMouseReleavedEvent(ofMouseEventArgs & e) {
     
     polylineManager->mouseReleased(coords.x, coords.y);
     vectorGradManager->mouseReleased(coords.x, coords.y);
-
     
 }
 
-
-
 void ParticlesCL::onKeyPressedEvent(ofKeyEventArgs & e) {
     
-    
     switch (e.key) {
-        case 'd':
-           // bDebugRepulsionForces = !bDebugRepulsionForces;
-        break;
-        
-        
+            
         default:
         break;
     }
@@ -630,8 +602,6 @@ void ParticlesCL::onPolyChangedHandler(int & e) {
         return;
     
     numOfVertices = 0;
-    
-    obstacles.initBuffer(2048*4);
     
     int verticeIndex = 0;
     for (int i=0; i<polylineManager->polylines.size(); i++) {
@@ -670,14 +640,10 @@ void ParticlesCL::onPolyChangedHandler(int & e) {
         
         opencl.kernel("update")->setArg(1, numOfVertices);
         opencl.kernel("update")->setArg(2, obstacles);
+        
         obstacles.writeToDevice();
         
     }
-    
-}
-
-void ParticlesCL::addVectorField() {
-    
     
 }
 

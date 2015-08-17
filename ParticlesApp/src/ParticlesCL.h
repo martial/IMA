@@ -35,7 +35,6 @@ public:
     void setTextureHeight(float height);
     
     void setVectorFields();
-    void addVectorField();
     
     void onWheelEvent(float & aperture);
     
@@ -85,6 +84,8 @@ public:
     
 private:
     
+    int     nParticles;
+
     
     ofFbo   fbo;
     ofFbo::Settings fboSettings;
