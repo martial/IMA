@@ -299,10 +299,9 @@ void ParticlesCL::update() {
     //upload to GPU
     particles.writeToDevice();
     particlePos.writeToDevice();
-    opencl.flush();
 
     opencl.kernel("update")->run1D( N );
-      
+    
     vectorFieldsRect.x = origRect.width * .5 - vectorFieldsRect.width * .5;
     vectorFieldsRect.y = origRect.height * .5 - vectorFieldsRect.height +  vectorFieldsRect.height * .5;
     
