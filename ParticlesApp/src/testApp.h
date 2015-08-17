@@ -28,8 +28,6 @@ public:
     
     bool            bReady, bHasSetup;
     
-    ofImage img;
-
     
 };
 

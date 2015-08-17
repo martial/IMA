@@ -13,8 +13,8 @@ void testApp::setup() {
     
     ofEnableSmoothing();
 	
-    ofSetVerticalSync(true);
-	//ofSetFrameRate(41);			// run as fast as you can
+    //ofSetVerticalSync(true);
+	ofSetFrameRate(60);			// run as fast as you can
 	
     settings.load("settings.xml");
     
@@ -50,43 +50,6 @@ void testApp::setup() {
     
     ofSetWindowTitle("IMA App");
     
-    
-    /*
-    int w = 200;
-    int h = 100;
-    img.allocate(w, h, OF_IMAGE_COLOR_ALPHA);
-    img.setColor(ofColor::white);
-    
-    
-    for (int i = 0; i < w; i++) {
-        
-        
-        ofLog(OF_LOG_NOTICE, "-----");
-
-        for (int j = 0; j < h; j++) {
-            
-            ofColor color= ofColor(255,0,0);
-            
-            
-            float rdmStep = j / (float)h;
-            
-            float rdm = ofRandom(1.0);
-            if (rdm < rdmStep) {
-                color.set(0,0,0);
-            }
-            
-            ofLog(OF_LOG_NOTICE, "rdm %f", rdmStep);
-
-            
-            
-            img.setColor(i , j , color);
-        }
-    }
-    
-    
-    img.update();
-     
-     */
 
 }
 
@@ -108,7 +71,6 @@ void testApp::update(){
     [ui setZoom:scaleString];
 
     
-    
 }
 
 
@@ -118,16 +80,11 @@ void testApp::draw(){
     ofSetColor(255,255,255, 255);
     particles.draw();
     
-    //vectorGradientManger.draw();
-    
-    // test with noise gradient
-
-    
-    //img.draw(0,0);
 }
 
 void testApp::keyPressed(int key){
 	switch(key) {
+            
 		case 'f':
 			ofToggleFullscreen();
 			break;
