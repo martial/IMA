@@ -48,7 +48,6 @@ public:
     void setVFScale(float scale);
     void setVFBlur(bool blur);
 
-    
     void setNumOfParticles(int num);
     void setMinLife(int num);
     void setMaxLife(int num);
@@ -79,6 +78,8 @@ public:
     bool bBlurVectorField;
     bool bForceRandom;
     bool bAnimate;
+    bool bDrawBounds;
+
     
     ofRectangle vectorFieldsRect;
     
@@ -116,7 +117,6 @@ private:
     
     VectorGradientsManager * vectorGradManager;
     
-    bool bDrawBounds;
     
 };
 

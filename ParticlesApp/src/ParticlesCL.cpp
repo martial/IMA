@@ -155,16 +155,12 @@ void ParticlesCL::setParticles () {
         p.death =  minLife + ofRandom(maxLife);
         p.life =  2000+ ofRandom(2000);
         
- 
-            
         particlePos[i].x = 0.0f;
         particlePos[i].y = 0.0f;
         
         particleCol[i].x = 1.0f;
         particleCol[i].y = 1.0f;
         particleCol[i].z = 1.0f;
-        
-        
         
     }
     
@@ -174,13 +170,9 @@ void ParticlesCL::setParticles () {
     opencl.kernel("update")->setArg(4, particleCol.getCLMem());
     opencl.kernel("update")->setArg(3, particlePos.getCLMem());
 
-    
-    
     particles.writeToDevice();
     particlePos.writeToDevice();
     particleCol.writeToDevice();
-
-    
     
 }
 
@@ -210,8 +202,6 @@ void ParticlesCL::setParticleVFIndex() {
     }
     
     particles.writeToDevice();
-
-
     
 }
 
@@ -246,7 +236,6 @@ void ParticlesCL::setVectorFields() {
         vf->index = i;
         bNeedReset = false;
         
-        
         vectorFields.push_back(vf);
         
     }
@@ -261,7 +250,6 @@ void ParticlesCL::update() {
         
         setFBO();
         setVectorFields();
-
         bNeedReset = false;
     }
     
@@ -275,12 +263,9 @@ void ParticlesCL::update() {
     }
 
     ofxDragAndZoomable::update();
-
-
     
     particlePos.readFromDevice();
     particles.readFromDevice();
-    
     
     ofVec2f direction;
     for(int i=0; i<N; i++) {
@@ -294,11 +279,7 @@ void ParticlesCL::update() {
             particlePos[i].x = rdmPos.y;
             
             p.life = 0;
-            //p.dummy.x = 0;
             p.death =  minLife + ofRandom(maxLife);
-            
-            
-            //p.death = 5000 + ofRandom(1000);
             
             
         } else {
@@ -315,7 +296,6 @@ void ParticlesCL::update() {
         
     }
     
-    
     //upload to GPU
     particles.writeToDevice();
     particlePos.writeToDevice();
@@ -323,10 +303,8 @@ void ParticlesCL::update() {
 
     opencl.kernel("update")->run1D( N );
       
-    // calculate pos
     vectorFieldsRect.x = origRect.width * .5 - vectorFieldsRect.width * .5;
     vectorFieldsRect.y = origRect.height * .5 - vectorFieldsRect.height +  vectorFieldsRect.height * .5;
-    
     
     if(ofGetFrameNum() % 400 == 0 && ofGetFrameNum() > 0  )
         randomize();
@@ -336,23 +314,18 @@ void ParticlesCL::update() {
 
 void ParticlesCL::randomize() {
     
-    
-    
     for(int i=0; i<numOfVFs; i++) {
         
         ofxVectorField * vf = vectorFields[i];
         vf->randomize();
         vf->scale(this->vfScale);
-
         
     }
-    
     
 }
 
 
 ofVec2f ParticlesCL::getRandomPos() {
-    
     
     float px, py;
     px = ofRandom(vectorFieldsRect.x, vectorFieldsRect.x + vectorFieldsRect.width);
@@ -377,7 +350,6 @@ ofVec2f ParticlesCL::getRandomPos() {
                 }
                 
             }
-            
             
         }
         
@@ -420,8 +392,6 @@ void ParticlesCL::prepass(){
     
     ofPopMatrix();
    
-    
-  
     if(bDrawBounds) {
         
         ofNoFill();
@@ -441,11 +411,6 @@ void ParticlesCL::prepass(){
         }
     }
     
-    
-    
-    
-    //ofSetColor(255, 0, 0);
-    //ofCircle(getPointAtCoordinate(ofVec2f(ofGetMouseX(), ofGetMouseY())), 20);
     
     ofSetColor(255,255,255);
 
@@ -478,7 +443,6 @@ void ParticlesCL::drawInnerSmoothedRect(float depth) {
     glVertex3f(origRect.x, origRect.y,0);
     glVertex3f( origRect.x + origRect.width,origRect.y,0);
 
-    
     glColor4f(0,0,0, 0);
     glVertex3f(origRect.x, origRect.y + depth,0);
     glVertex3f( origRect.x + origRect.width,origRect.y + depth,0);
@@ -488,7 +452,6 @@ void ParticlesCL::drawInnerSmoothedRect(float depth) {
     glColor4f(0,0,0, 1);
     glVertex3f(origRect.x, origRect.y,0);
     glVertex3f( origRect.x,origRect.y + origRect.height,0);
-    
     
     glColor4f(0,0,0, 0);
     glVertex3f(origRect.x + depth, origRect.y,0);
@@ -536,18 +499,18 @@ ofFbo* ParticlesCL::getFbo() {
 void ParticlesCL::setNumOfParticles(int num) {
     
     N = num;
-    
     bNeedVBOReset = true;
 
 }
 
 void ParticlesCL::setMinLife(int num) {
+    
     this->minLife = num;
-   
-
+    
 }
 
 void ParticlesCL::setMaxLife(int num) {
+    
     this->maxLife = num;
     
 }
@@ -593,7 +556,6 @@ void ParticlesCL::setDamp(float damp) {
 void ParticlesCL::setVFScale(float scale) {
     
     this->vfScale = scale * 0.2;
-    //vectorField.scale(vfScale);
     bNeedReset = true;
 
     
@@ -636,7 +598,6 @@ void ParticlesCL::onMouseDragEvent(ofMouseEventArgs & e) {
 }
 
 void ParticlesCL::onMouseReleavedEvent(ofMouseEventArgs & e) {
-    
     
     ofVec2f pnt =   ofVec2f(ofGetMouseX(), ofGetMouseY());
     ofVec2f coords =  getPointAtCoordinate(pnt);
@@ -691,37 +652,30 @@ void ParticlesCL::onPolyChangedHandler(int & e) {
                 pntB.set(vertices[0]);
             }
             
-                float dist = pntA.distance(pntB);
-                float res = repDist;
+            float dist = pntA.distance(pntB);
+            float res = repDist;
+            int steps = floor(dist/ res);
+            
+            for (int z=0; z<steps; z++) {
+                ofVec2f pnt = pntA.getInterpolated(pntB,  (float)z / (float)steps);
                 
-                int steps = floor(dist/ res);
+                float2 f;
+                f.x =pnt.x ;
+                f.y =pnt.y ;
+                obstacles[numOfVertices] = f;
+                numOfVertices++;
                 
-                for (int z=0; z<steps; z++) {
-                    ofVec2f pnt = pntA.getInterpolated(pntB,  (float)z / (float)steps);
-                    
-                    float2 f;
-                    f.x =pnt.x ;
-                    f.y =pnt.y ;
-                    obstacles[numOfVertices] = f;
-                    numOfVertices++;
-
-
-                }
+            }
             
         }
         
         opencl.kernel("update")->setArg(1, numOfVertices);
         opencl.kernel("update")->setArg(2, obstacles);
-        
         obstacles.writeToDevice();
-
         
     }
-
     
 }
-
-
 
 void ParticlesCL::addVectorField() {
     

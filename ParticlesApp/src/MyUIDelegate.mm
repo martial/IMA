@@ -41,6 +41,7 @@
 @synthesize sceneHeightInput;
 @synthesize textureWidthInput;
 @synthesize textureHeightInput;
+@synthesize drawBoundsBtn;
 
 
 -(void)awakeFromNib {
@@ -466,6 +467,15 @@
     app->particles.setTextureHeight(value);
     app->settings.set("texHeight", value);
 }
+
+
+-(IBAction) onDrawBoundsBtnHandler:(id)sender {
+    
+    testApp *app = (testApp*)ofGetAppPtr();
+    app->particles.bDrawBounds = !app->particles.bDrawBounds;
+    
+}
+ 
 
 
 

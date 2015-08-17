@@ -16,6 +16,6 @@
     <property key="vfBlur" value="0"></property>
     <property key="vfHeight" value="1100"></property>
     <property key="vfRes" value="14"></property>
-    <property key="vfScale" value="12"></property>
+    <property key="vfScale" value="6"></property>
     <property key="vfWidth" value="1800"></property>
 </properties>

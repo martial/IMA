@@ -39,6 +39,7 @@
     NSTextField *sceneHeightInput;
     NSTextField *textureWidthInput;
     NSTextField *textureHeightInput;
+    NSButton *drawBoundsBtn;
 
     
     
@@ -88,6 +89,8 @@
 -(IBAction) onTextureWidthInputHandler:(id)sender;
 -(IBAction) onTextureHeightInputHandler:(id)sender;
 
+-(IBAction) onDrawBoundsBtnHandler:(id)sender;
+
 
 
 -(void) setZoom:(string)value;
@@ -130,5 +133,6 @@
 @property (assign) IBOutlet NSTextField *sceneHeightInput;
 @property (assign) IBOutlet NSTextField *textureWidthInput;
 @property (assign) IBOutlet NSTextField *textureHeightInput;
+@property (assign) IBOutlet NSButton *drawBoundsBtn;
 
 @end
