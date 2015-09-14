@@ -14,7 +14,11 @@ void testApp::setup() {
     ofEnableSmoothing();
 	
     //ofSetVerticalSync(true);
-	ofSetFrameRate(60);			// run as fast as you can
+    
+    ofSetVerticalSync(true);
+   // ofxCocoa::useDi
+    
+	//ofSetFrameRate(60);			// run as fast as you can
 	
     settings.load("settings.xml");
     
@@ -24,7 +28,7 @@ void testApp::setup() {
     polyLineManager.loadData();
     polyLineManager.setActive(false); // inactive
 
-    videoManager.setPolyLineMaker(&polyLineManager);
+   // videoManager.setPolyLineMaker(&polyLineManager);
 
     particles.setPolyLine(&polyLineManager);
     particles.setVectorGradient(&vectorGradientManger);
@@ -50,6 +54,8 @@ void testApp::setup() {
     
     ofSetWindowTitle("IMA App");
     
+    polyLineManager.setInactiveMaskColor(0, 0, 0, 255);
+    
 
 }
 
@@ -64,11 +70,15 @@ void testApp::update(){
 
     ofSetWindowTitle("IMA App [" + ofToString(ceil(ofGetFrameRate())) + "] FPS");
     
+    /*
     float scale = 200 - round((particles.getScale()) * 100);
     string scaleString = "Zoom :" + ofToString(scale) + " %";
     AppDelegate * d = (AppDelegate *)[[NSApplication sharedApplication] delegate] ;
     MyUIDelegate *ui = [d uiDelegate];
     [ui setZoom:scaleString];
+     */
+    
+    
 
     
 }
@@ -80,9 +90,15 @@ void testApp::draw(){
     ofSetColor(255,255,255, 255);
     particles.draw();
     
+    
+    
 }
 
 void testApp::keyPressed(int key){
+    
+    MSA::ofxCocoa::setSyncToDisplayLink(true);
+
+    
 	switch(key) {
             
 		case 'f':

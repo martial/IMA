@@ -346,8 +346,8 @@ ofVec2f ParticlesCL::getRandomPos() {
 //--------------------------------------------------------------
 void ParticlesCL::prepass(){
     
-    opencl.finish();
-    opencl.flush();
+    //opencl.finish();
+    //opencl.flush();
     
     fbo.begin();
     ofBackground(0,0,0);

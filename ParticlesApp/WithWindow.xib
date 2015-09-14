@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">14E46</string>
+		<string key="IBDocument.SystemVersion">14F27</string>
 		<string key="IBDocument.InterfaceBuilderVersion">7706</string>
 		<string key="IBDocument.AppKitVersion">1348.17</string>
 		<string key="IBDocument.HIToolboxVersion">758.70</string>
@@ -2023,14 +2023,6 @@
 					<int key="connectionID">332</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">onFitToScreenBtnHander:</string>
-						<reference key="source" ref="371598016"/>
-						<reference key="destination" ref="99451369"/>
-					</object>
-					<int key="connectionID">333</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">maskColorPicker</string>
 						<reference key="source" ref="371598016"/>
@@ -2413,6 +2405,14 @@
 						<reference key="destination" ref="1065497243"/>
 					</object>
 					<int key="connectionID">545</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">onFitToScreenBtnHander:</string>
+						<reference key="source" ref="371598016"/>
+						<reference key="destination" ref="99451369"/>
+					</object>
+					<int key="connectionID">546</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3464,7 +3464,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">545</int>
+			<int key="maxID">546</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3902,6 +3902,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="onAddMaskBtnHandler:">id</string>
 						<string key="onDebugForcesHandler:">id</string>
+						<string key="onDrawBoundsBtnHandler:">id</string>
 						<string key="onFitToScreenBtnHander:">id</string>
 						<string key="onForceRandomHandler:">id</string>
 						<string key="onMaskColorPickerHandler:">id</string>
@@ -3935,6 +3936,10 @@
 						</object>
 						<object class="IBActionInfo" key="onDebugForcesHandler:">
 							<string key="name">onDebugForcesHandler:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onDrawBoundsBtnHandler:">
+							<string key="name">onDrawBoundsBtnHandler:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="onFitToScreenBtnHander:">

@@ -154,7 +154,7 @@
 -(IBAction) onFitToScreenBtnHander:(id)sender {
     
     testApp *app = (testApp*)ofGetAppPtr();
-    app->videoManager.fitToScreen();
+    app->particles.fitToScreen();
     
 }
 
@@ -180,7 +180,7 @@
 -(IBAction) onToggleOutputBtnHandler:(id)sender {
     
     testApp *app = (testApp*)ofGetAppPtr();
-    app->videoManager.toggleVideoVisible();
+   // app->particles.toggleVideoVisible();
 }
 
 -(IBAction) onVfScaleInputHandler:(id)sender {

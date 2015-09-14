@@ -22,7 +22,6 @@ public:
     ofxSyphonServer         syphonServer;
     PolylineMaker           polyLineManager;
     VectorGradientsManager  vectorGradientManger;
-    VideoManager            videoManager;
     ofxSettings             settings;
     ParticlesCL             particles;
     

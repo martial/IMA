@@ -6,16 +6,16 @@
     <property key="maskColor" value="0.0380958,0.0380958,0.0380958"></property>
     <property key="maxLife" value="1000"></property>
     <property key="minLife" value="1000"></property>
-    <property key="nParticles" value="100000"></property>
+    <property key="nParticles" value="80000"></property>
     <property key="numOfVfs" value="8"></property>
     <property key="repDist" value="14"></property>
     <property key="repRadius" value="16"></property>
-    <property key="texHeight" value="1200"></property>
-    <property key="texWidth" value="1900"></property>
+    <property key="texHeight" value="2160"></property>
+    <property key="texWidth" value="6000"></property>
     <property key="vfAnimate" value="0"></property>
     <property key="vfBlur" value="0"></property>
-    <property key="vfHeight" value="1100"></property>
+    <property key="vfHeight" value="2360"></property>
     <property key="vfRes" value="14"></property>
     <property key="vfScale" value="3"></property>
-    <property key="vfWidth" value="1800"></property>
+    <property key="vfWidth" value="6200"></property>
 </properties>

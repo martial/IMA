@@ -21,6 +21,7 @@ DynamicPolyline::DynamicPolyline () {
     bLastSelected       = false;
     handlerSelected     = 0;
     enableEvents();
+    inactiveColor.set(0,0,0);
     
     bIsNew              = false;
 }
@@ -64,7 +65,7 @@ void DynamicPolyline::draw() {
     } else {
         
         if(bLastSelected)
-            ofSetColor(255, 0, 0, 50);
+            ofSetColor(255, 0, 0, 255);
         else
             ofSetColor(255, 255,255,50);
         
